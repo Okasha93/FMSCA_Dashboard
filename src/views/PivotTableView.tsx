@@ -33,7 +33,7 @@ const PivotTableView: React.FC = () => {
   }
 
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box sx={{ padding: 4, backgroundColor: '#F3F4F6', borderRadius: 4, boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)' }}>
       <PivotTable 
         data={data}
         rowField={rowField}

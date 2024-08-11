@@ -22,9 +22,9 @@ const PivotChart: React.FC<PivotChartProps> = ({ pivotData, rowField }) => {
   }), [pivotData, rowField]);
 
   return (
-    <Box sx={{ width: '100%', height: 700 }}>
-      <Bar data={chartData} />
-    </Box>
+    <Box sx={{ width: '100%', height: { xs: 400, md: 700 }, padding: 2, backgroundColor: 'white', boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)', borderRadius: 4 }}>
+    <Bar data={chartData} />
+  </Box>
   );
 };
 

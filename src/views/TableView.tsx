@@ -90,10 +90,17 @@ const TableView: React.FC = () => {
   }
   
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box
+      sx={{
+        padding: { xs: 2, sm: 4 },
+        backgroundColor: '#F3F4F6',
+        borderRadius: 4,
+        boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',
+      }}
+    >
       <Typography variant="h4" gutterBottom>
         FMSCA Dashboard
-      </Typography>
+        </Typography>
       <DataTable data={data} />
       <Box sx={{ marginTop: 4 }}>
         <Chart
@@ -104,10 +111,16 @@ const TableView: React.FC = () => {
           onValueFieldChange={setValueField}
         />
       </Box>
-      <Box sx={{ marginTop: 18}}>
-        <Button onClick={() => setModalOpen(true)}>Save/Load Views</Button>
-        <Button onClick={resetConfig}>Reset to Default</Button>
-        <Button onClick={shareTableSetup}>Generate Shareable Link</Button>
+      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+        <Button variant="contained" color="primary" onClick={() => setModalOpen(true)}>
+          Save/Load Views
+        </Button>
+        <Button variant="outlined" color="secondary" onClick={resetConfig}>
+          Reset to Default
+        </Button>
+        <Button variant="contained" color="primary" onClick={shareTableSetup}>
+          Generate Shareable Link
+        </Button>
       </Box>
       <SaveLoadModal
         open={modalOpen}

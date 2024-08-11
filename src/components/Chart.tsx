@@ -10,7 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import {
-  Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography,
+  Box, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography,
 } from '@mui/material';
 import _ from 'lodash';
 
@@ -125,45 +125,60 @@ const Chart: React.FC<ChartProps> = ({ data, labelField, valueField, onLabelFiel
   }
 
   return (
-    <Box sx={{ width: '100%', height: 700 }}>
-      <Box sx={{ display: 'flex', gap: 3, marginBottom: 4 }}>
-        <FormControl sx={{ minWidth: 150, marginTop: 7 }}>
-          <InputLabel>Label Field</InputLabel>
-          <Select value={labelField} onChange={handleLabelFieldChange}>
-            {Object.keys(data[0] || {}).map((field) => (
-              <MenuItem key={field} value={field}>
-                {field}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ minWidth: 150, marginTop: 7  }}>
-          <InputLabel>Value Field</InputLabel>
-          <Select value={valueField} onChange={handleValueFieldChange}>
-            {Object.keys(data[0] || {}).map((field) => (
-              <MenuItem key={field} value={field}>
-                {field}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
-
+    <Box
+      className="container"
+      sx={{
+        width: '100%',
+        padding: { xs: 1, sm: 2 },
+        backgroundColor: 'white',
+        boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',
+        borderRadius: 4,
+        marginBottom: 4,
+      }}
+    >
+      <Grid container spacing={2} sx={{ marginBottom: 2 }}>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel>Label Field</InputLabel>
+            <Select value={labelField} onChange={handleLabelFieldChange}>
+              {Object.keys(data[0] || {}).map((field) => (
+                <MenuItem key={field} value={field}>
+                  {field}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel>Value Field</InputLabel>
+            <Select value={valueField} onChange={handleValueFieldChange}>
+              {Object.keys(data[0] || {}).map((field) => (
+                <MenuItem key={field} value={field}>
+                  {field}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
 
       <Bar data={chartData} options={options} />
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 10 }}>
+
+      <Grid container spacing={2} sx={{ marginTop: 2 }}>
         {editableValues.map((value, index) => (
-          <TextField
-            key={index}
-            label={`Edit ${chartData.labels ? chartData.labels[index] : 'Value'}`}
-            type="number"
-            value={value}
-            onChange={(e) => handleEditChange(index, Number(e.target.value))}
-            fullWidth
-          />
+          <Grid item xs={12} sm={4} key={index}>
+            <TextField
+              label={`Edit ${chartData.labels ? chartData.labels[index] : 'Value'}`}
+              type="number"
+              value={value}
+              onChange={(e) => handleEditChange(index, Number(e.target.value))}
+              fullWidth
+              variant="outlined"
+            />
+          </Grid>
         ))}
-      
-      </Box>
+      </Grid>
     </Box>
   );
 };

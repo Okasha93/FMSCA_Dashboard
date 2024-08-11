@@ -65,12 +65,26 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
   };
 
   return (
-    <Box sx={{ height: 660, width: '100%' }}>
+    <Box
+      sx={{
+        height: { xs: 'auto', md: 770 },
+        width: '100%',
+        padding: 2,
+        paddingBottom: 10,
+        backgroundColor: 'white',
+        boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',
+        borderRadius: 4,
+      }}
+    >
       <TextField
         label="Search"
         variant="outlined"
         fullWidth
-        sx={{ marginBottom: 2 }}
+        sx={{
+          marginBottom: 2,
+          width: { xs: '100%', sm: '30%' },
+          alignSelf: 'flex-start',
+        }}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
@@ -86,6 +100,26 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
         }}
         onPaginationModelChange={handlePaginationModelChange}
         pagination
+        sx={{
+          '& .MuiDataGrid-root': {
+            border: 'none',
+            backgroundColor: 'white',
+            borderRadius: 2,
+          },
+          '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: '#1E3A8A',
+            color: 'blue',
+          },
+          '& .MuiDataGrid-row': {
+            backgroundColor: '#F3F4F6',
+          },
+          '& .MuiDataGrid-cell': {
+            padding: '8px',
+          },
+          '& .MuiDataGrid-footerContainer': {
+            backgroundColor: '#F3F4F6',
+          },
+        }}
       />
     </Box>
   );
