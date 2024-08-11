@@ -4,7 +4,7 @@ import { Box, Typography, CircularProgress, Button } from '@mui/material';
 import DataTable from '../components/DataTable';
 import Chart from '../components/Chart';
 import SaveLoadModal from '../components/SaveLoadModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const TableView: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
@@ -14,6 +14,7 @@ const TableView: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [savedViews, setSavedViews] = useState<string[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     axios
@@ -38,6 +39,17 @@ const TableView: React.FC = () => {
     }
   }, []);
 
+  // Updated useEffect to use useLocation hook
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const config = params.get('config');
+    if (config) {
+      const decodedConfig = JSON.parse(decodeURIComponent(config));
+      setLabelField(decodedConfig.labelField);
+      setValueField(decodedConfig.valueField);
+    }
+  }, [location.search]);
+
   const saveConfig = (viewName?: string) => {
     const config = {
       labelField,
@@ -56,16 +68,7 @@ const TableView: React.FC = () => {
     setLabelField('entity_type');
     setValueField('power_units');
   };
-
-  const shareTableSetup = () => {
-    const config = {
-      labelField,
-      valueField,
-    };
-    const encodedConfig = encodeURIComponent(JSON.stringify(config));
-    navigate(`?config=${encodedConfig}`);
-  };
-
+  
   const loadConfig = (viewName: string) => {
     const savedConfig = localStorage.getItem(viewName);
     if (savedConfig) {
@@ -74,17 +77,25 @@ const TableView: React.FC = () => {
       setValueField(config.valueField);
     }
   };
-  
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const config = params.get('config');
-    if (config) {
-      const decodedConfig = JSON.parse(decodeURIComponent(config));
-      setLabelField(decodedConfig.labelField);
-      setValueField(decodedConfig.valueField);
-    }
-  }, []);
-  
+
+  const shareTableSetup = () => {
+    const config = {
+      labelField,
+      valueField,
+    };
+    const encodedConfig = encodeURIComponent(JSON.stringify(config));
+    const newUrl = `${window.location.origin}${window.location.pathname}?config=${encodedConfig}`;
+    
+    // Copy the new URL to the clipboard
+    navigator.clipboard.writeText(newUrl)
+      .then(() => {
+        alert('Link copied to clipboard!');
+      })
+      .catch((err) => {
+        console.error('Failed to copy the link: ', err);
+      });
+  };
+
   if (loading) {
     return (
       <Box
@@ -95,11 +106,11 @@ const TableView: React.FC = () => {
           height: '100vh',
         }}
       >
-        <CircularProgress size={150}/>
+        <CircularProgress size={150} />
       </Box>
     );
   }
-  
+
   return (
     <Box
       sx={{
@@ -111,7 +122,7 @@ const TableView: React.FC = () => {
     >
       <Typography variant="h4" gutterBottom>
         FMSCA Dashboard
-        </Typography>
+      </Typography>
       <DataTable data={data} />
       <Box sx={{ marginTop: 4 }}>
         <Chart
@@ -130,7 +141,7 @@ const TableView: React.FC = () => {
           Reset to Default
         </Button>
         <Button variant="contained" color="primary" onClick={shareTableSetup}>
-          Generate Shareable Link
+          Share Link
         </Button>
       </Box>
       <SaveLoadModal
@@ -142,6 +153,6 @@ const TableView: React.FC = () => {
       />
     </Box>
   );
-  };
-  
-  export default TableView;
+};
+
+export default TableView;
