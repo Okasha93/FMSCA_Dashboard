@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import TableView from './views/TableView';
@@ -40,14 +40,10 @@ function App() {
       <CssBaseline />
       <Router>
         <div className="App-header">
-          <Switch>
-            <Route path="/pivot-table">
-              <PivotTableView />
-            </Route>
-            <Route path="/">
-              <TableView />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/pivot-table" element={<PivotTableView />} />
+            <Route path="/" element={<TableView />} />
+          </Routes>
         </div>
       </Router>
     </ThemeProvider>
