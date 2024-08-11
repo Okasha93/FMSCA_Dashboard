@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
-import { Box, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface DataTableProps {
   data: {
@@ -50,6 +51,7 @@ const columns: GridColDef[] = [
 const DataTable: React.FC<DataTableProps> = ({ data }) => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const navigate = useNavigate();
 
   // Filter data based on search query
   const filteredData = useMemo(() => {
@@ -76,18 +78,36 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
         borderRadius: 4,
       }}
     >
-      <TextField
-        label="Search"
-        variant="outlined"
-        fullWidth
+      <Box
         sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           marginBottom: 2,
-          width: { xs: '100%', sm: '30%' },
-          alignSelf: 'flex-start',
         }}
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
+      >
+        <TextField
+          label="Search"
+          variant="outlined"
+          sx={{
+            width: { xs: '80%', sm: '50%' },
+          }}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/pivot-table')}
+          sx={{
+            marginLeft: { xs: 2, sm: 2 },
+            marginTop: { xs: 2, sm: 2 },
+            width: { xs: '100%', sm: 'auto' },
+          }}
+        >
+          Go to Pivot Table
+        </Button>
+      </Box>
       <DataGrid
         rows={filteredData}
         columns={columns}

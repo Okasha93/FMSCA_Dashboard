@@ -86,7 +86,18 @@ const TableView: React.FC = () => {
   }, []);
   
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <CircularProgress size={150}/>
+      </Box>
+    );
   }
   
   return (
