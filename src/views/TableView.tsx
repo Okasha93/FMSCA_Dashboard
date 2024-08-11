@@ -4,7 +4,7 @@ import { Box, Typography, CircularProgress, Button } from '@mui/material';
 import DataTable from '../components/DataTable';
 import Chart from '../components/Chart';
 import SaveLoadModal from '../components/SaveLoadModal';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const TableView: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
@@ -13,7 +13,7 @@ const TableView: React.FC = () => {
   const [valueField, setValueField] = useState<string>('power_units');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [savedViews, setSavedViews] = useState<string[]>([]);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -63,7 +63,7 @@ const TableView: React.FC = () => {
       valueField,
     };
     const encodedConfig = encodeURIComponent(JSON.stringify(config));
-    history.push(`?config=${encodedConfig}`);
+    navigate(`?config=${encodedConfig}`);
   };
 
   const loadConfig = (viewName: string) => {
